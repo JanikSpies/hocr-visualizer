@@ -26,7 +26,7 @@ const TextArea: React.FC<Props> = ({
                 value={value}
                 placeholder={placeholder}
                 onChange={(e) => setValue(e.target.value)}
-                className={`p-4 rounded-2xl border border-slate-300 w-full h-full`}
+                className={`p-4 rounded-2xl border border-slate-300 w-full h-full focus:outline-0`}
             />
             <div className="label">
                 <span className="label-text-alt text-red-700">{error}</span>
