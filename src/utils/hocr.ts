@@ -1,5 +1,4 @@
-import {ParsedHocrData, HocrElement} from '../models/hocr'
-
+import { ParsedHocrData, HocrElement } from '../models/hocr'
 
 const parseBBox = (title: string | null): [number, number, number, number] | null => {
   if (!title) return null
@@ -26,11 +25,12 @@ export const parseHocr = (hocrString: string): ParsedHocrData => {
   let pageHeight = 0
 
   const pageBBox = parseBBox(pageNode?.getAttribute('title') || null)
+  
   if (pageBBox) {
     [, , pageWidth, pageHeight] = pageBBox
   }
 
-  const nodes = Array.from(doc.querySelectorAll('.ocrx_word, .ocr_line'))
+  const nodes = Array.from(doc.querySelectorAll('.ocrx_word'))
   const elements: HocrElement[] = []
 
   nodes.forEach((node, index) => {
@@ -42,8 +42,8 @@ export const parseHocr = (hocrString: string): ParsedHocrData => {
       const w = x1 - x0
       const h = y1 - y0
 
-      if (x1 > pageWidth) pageWidth = x1
-      if (y1 > pageHeight) pageHeight = y1
+      if (pageWidth === 0 && x1 > pageWidth) pageWidth = x1
+      if (pageHeight === 0 && y1 > pageHeight) pageHeight = y1
 
       elements.push({
         id: `word-${index}`,
